@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,116 +6,50 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9; /* slate-100 */
-        }
-        .main-container {
-            transition: all 0.3s ease-in-out;
-        }
-        .drop-zone {
-            border: 2px dashed #cbd5e1; /* slate-300 */
-            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-        }
-        .drop-zone.drag-over {
-            background-color: #eef2ff; /* indigo-50 */
-            border-color: #4f46e5; /* indigo-600 */
-        }
-        .loader {
-            border: 4px solid #e5e7eb; /* gray-200 */
-            border-top: 4px solid #4f46e5; /* indigo-600 */
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        .prose h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .drop-zone { border: 2px dashed #cbd5e1; transition: all 0.2s; }
+        .drop-zone.drag-over { background-color: #eef2ff; border-color: #4f46e5; }
+        .loader { border: 4px solid #e5e7eb; border-top: 4px solid #4f46e5; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         .prose ul { list-style-type: disc; margin-left: 1.25rem; }
-        .prose strong { font-weight: 600; color: #1e293b; } /* slate-800 */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .prose strong { font-weight: 600; color: #1e293b; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="text-slate-700 flex items-center justify-center min-h-screen p-4">
-
-    <div id="app-container" class="main-container w-full max-w-2xl bg-white rounded-2xl shadow-lg border border-slate-200 p-6 md:p-10">
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-lg border border-slate-200 p-6 md:p-10">
         <div class="text-center mb-8">
             <h1 class="text-2xl md:text-3xl font-bold text-slate-900">Product Recognizer</h1>
             <p class="text-slate-500 mt-2 text-base">Identify products from images with AI.</p>
         </div>
-
-        <!-- Image Upload Section -->
         <div id="upload-section">
             <div id="drop-zone" class="drop-zone w-full rounded-xl p-8 text-center cursor-pointer hover:bg-slate-50">
                 <input type="file" id="file-input" class="hidden" accept="image/*">
                 <div class="flex flex-col items-center text-slate-500">
-                     <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
                     <p class="font-semibold text-slate-700">Drag & drop image or <span class="text-indigo-600">browse</span></p>
-                    <p class="text-sm mt-1">Supports: JPG, PNG, WEBP</p>
                 </div>
             </div>
         </div>
-
-        <!-- Image Preview and Analysis Button -->
         <div id="preview-section" class="hidden mt-6 text-center">
             <img id="image-preview" src="#" alt="Image Preview" class="max-w-full max-h-96 mx-auto rounded-lg shadow-md">
             <div class="mt-6 flex flex-col md:flex-row items-center justify-center gap-4">
-                <button id="analyze-button" class="w-full md:w-auto bg-indigo-600 text-white font-semibold py-2.5 px-10 rounded-lg shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-105">
-                    Analyze Product
-                </button>
-                <button id="reset-button" class="w-full md:w-auto bg-slate-100 text-slate-700 font-semibold py-2.5 px-6 rounded-lg hover:bg-slate-200 transition-colors border border-slate-300">
-                    New Image
-                </button>
+                <button id="analyze-button" class="w-full md:w-auto bg-indigo-600 text-white font-semibold py-2.5 px-10 rounded-lg shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-105">Analyze Product</button>
+                <button id="reset-button" class="w-full md:w-auto bg-slate-100 text-slate-700 font-semibold py-2.5 px-6 rounded-lg hover:bg-slate-200 transition-colors border border-slate-300">New Image</button>
             </div>
         </div>
-
-        <!-- Results and Loading Section -->
         <div id="result-section" class="mt-8">
             <div id="loader" class="hidden flex-col items-center justify-center text-center py-8">
                 <div class="loader"></div>
                 <p id="loader-message" class="mt-4 text-slate-500 font-medium">Analyzing image...</p>
             </div>
-            <div id="result-text" class="bg-slate-50 p-6 rounded-lg hidden prose max-w-none border border-slate-200">
-                <!-- AI generated content will be injected here -->
-            </div>
+            <div id="result-text" class="bg-slate-50 p-6 rounded-lg hidden prose max-w-none border border-slate-200"></div>
         </div>
-
-        <!-- Secondary Action Section -->
         <div id="secondary-action-section" class="hidden mt-6 pt-6 border-t border-slate-200 text-center">
             <button id="similar-btn" class="action-btn bg-slate-700 text-white">✨ Find Similar Products</button>
         </div>
     </div>
-
     <script>
-        // --- IMPORTANT SETUP ---
-        // PASTE YOUR GOOGLE AI API KEY HERE
-        const apiKey = "AIzaSyCuHZ5Qb5YEyNo7toqvfq5_R8qstdEFLcc"; // <--- GET YOUR FREE KEY from aistudio.google.com
-
-        // --- App Initialization ---
-        window.onload = function() {
-            if (!apiKey || apiKey === "") {
-                const appContainer = document.getElementById('app-container');
-                appContainer.innerHTML = `
-                    <div class="bg-red-50 border-l-4 border-red-500 text-red-800 p-6 rounded-lg" role="alert">
-                        <h2 class="font-bold text-xl mb-2">Configuration Required</h2>
-                        <p class="mb-4">This application requires a Google AI API key to function.</p>
-                        <ol class="list-decimal list-inside space-y-2">
-                            <li>Open this HTML file in a text editor.</li>
-                            <li>Go to <a href="https://aistudio.google.com" target="_blank" class="font-semibold underline hover:text-red-900">aistudio.google.com</a> to get your free API key.</li>
-                            <li>Find the <strong>const apiKey = "";</strong> line in the script section.</li>
-                            <li>Paste your key inside the quotes, save the file, and refresh the page.</li>
-                        </ol>
-                    </div>`;
-                return;
-            }
-            initializeApp();
-        };
-
-        function initializeApp() {
+        document.addEventListener('DOMContentLoaded', () => {
             const dropZone = document.getElementById('drop-zone');
             const fileInput = document.getElementById('file-input');
             const uploadSection = document.getElementById('upload-section');
@@ -133,7 +66,6 @@
             let imageBase64 = null;
             let currentProductDetails = "";
 
-            // --- Event Listeners ---
             dropZone.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', (e) => e.target.files[0] && handleFile(e.target.files[0]));
             dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
@@ -143,9 +75,9 @@
                 dropZone.classList.remove('drag-over');
                 e.dataTransfer.files[0] && handleFile(e.dataTransfer.files[0]);
             });
-            analyzeButton.addEventListener('click', analyzeProduct);
+            analyzeButton.addEventListener('click', () => callBackend('analyze'));
             resetButton.addEventListener('click', resetApp);
-            similarBtn.addEventListener('click', findSimilarProducts);
+            similarBtn.addEventListener('click', () => callBackend('similar'));
 
             function resetApp() {
                 uploadSection.classList.remove('hidden');
@@ -198,65 +130,47 @@
                 }
             }
 
-            async function callGemini(prompt, withImage = false) {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                let parts = [{ text: prompt }];
-                if (withImage && imageBase64) {
-                    parts.push({ inlineData: { mimeType: "image/jpeg", data: imageBase64 } });
-                }
-                const payload = { contents: [{ role: "user", parts: parts }] };
-                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) throw new Error(`API Error: ${response.status} ${response.statusText}`);
-                const result = await response.json();
-                if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
-                    return result.candidates[0].content.parts[0].text;
-                }
-                throw new Error("Invalid response structure from API.");
-            }
+            async function callBackend(action) {
+                if (action === 'analyze' && !imageBase64) return;
+                if (action === 'similar' && !currentProductDetails) return;
 
-            async function analyzeProduct() {
-                if (!imageBase64) return;
-                setLoading(true, 'Analyzing image...');
-                const prompt = `Analyze the image and identify the product. Provide a clear, well-formatted response with: **Product Name**, **Brand**, **Model/Type**, a bulleted list for **Key Features**, and its main **Use Case**. If you cannot identify it, say so.`;
+                let loadingMessage = action === 'analyze' ? 'Analyzing image...' : 'Finding similar products...';
+                setLoading(true, loadingMessage);
+
                 try {
-                    const responseText = await callGemini(prompt, true);
-                    currentProductDetails = responseText;
-                    resultText.innerHTML = formatResponse(currentProductDetails);
+                    const response = await fetch('/.netlify/functions/analyze', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: action,
+                            imageBase64: imageBase64,
+                            productDetails: currentProductDetails
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorResult = await response.json();
+                        throw new Error(errorResult.error || 'The server returned an error.');
+                    }
+
+                    const result = await response.json();
+                    
+                    if (action === 'analyze') {
+                        currentProductDetails = result.text;
+                    }
+                    
+                    resultText.innerHTML = formatResponse(result.text);
                     secondaryActionSection.classList.remove('hidden');
+
                 } catch (error) {
-                    console.error("Error analyzing product:", error);
-                    resultText.innerHTML = `<p class="text-red-600"><strong>Error:</strong> ${error.message}. Please check your API key and network connection.</p>`;
+                    console.error("Error:", error);
+                    resultText.innerHTML = `<p class="text-red-600"><strong>Error:</strong> ${error.message}</p>`;
                 } finally {
                     setLoading(false);
                 }
             }
-
-            async function findSimilarProducts() {
-                if (!currentProductDetails) return;
-                setLoading(true, 'Finding similar products...');
-                const prompt = `Based on the following product details, suggest 3 similar or alternative products. For each, provide a name, a brief description, and why someone might choose it over the original.\n\n## Original Product:\n${currentProductDetails}`;
-                try {
-                    const responseText = await callGemini(prompt);
-                    resultText.innerHTML = formatResponse(responseText);
-                } catch (error) {
-                    console.error("Error finding similar products:", error);
-                    resultText.innerHTML = `<p class="text-red-600"><strong>Error:</strong> ${error.message}. Please try again.</p>`;
-                } finally {
-                    setLoading(false);
-                    secondaryActionSection.classList.remove('hidden');
-                }
-            }
-        }
-
+        });
         const styleSheet = document.createElement("style");
-        styleSheet.innerText = `
-            .action-btn {
-                font-weight: 600; padding: 0.625rem 1.25rem; border-radius: 0.5rem;
-                transition: all 0.2s ease-in-out; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            }
-            .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-            .action-btn:disabled, button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
-        `;
+        styleSheet.innerText = `.action-btn { font-weight: 600; padding: 0.625rem 1.25rem; border-radius: 0.5rem; transition: all 0.2s ease-in-out; box-shadow: 0 1px 2px rgba(0,0,0,0.05); } .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); } .action-btn:disabled, button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }`;
         document.head.appendChild(styleSheet);
     </script>
 </body>
