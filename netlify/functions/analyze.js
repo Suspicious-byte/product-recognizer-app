@@ -1,6 +1,3 @@
-// This is your secure backend function.
-// It runs on Netlify's servers, not in the browser.
-
 exports.handler = async function (event) {
   // 1. Get the API key from a secure environment variable
   const apiKey = process.env.GEMINI_API_KEY;
